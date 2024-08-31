@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Student Management</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Student Management</h1>
+
+        <!-- Add Student Form -->
+        <form id="student-form" class="mt-4">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="averageGrade">Average Grade:</label>
+                <input type="number" class="form-control" id="averageGrade" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Student</button>
+        </form>
+
+        <!-- Student List -->
+        <div id="student-list" class="mt-4"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        // Fetch and display students
+        function fetchStudents() {
+            $.get('/api/students', function(students) {
+                let studentListHtml = '<ul class="list-group">';
+                students.forEach(student => {
+                    let colorClass = 'list-group-item-danger';
+                    if (student.averageGrade > 80) colorClass = 'list-group-item-success';
+                    else if (student.averageGrade > 50) colorClass = 'list-group-item-warning';
+
+                    studentListHtml += `
+                        <li class="list-group-item ${colorClass}">
+                            ${student.name} - ${student.averageGrade}%
+                            <button onclick="deleteStudent(${student.id})" class="btn btn-danger btn-sm float-right">Delete</button>
+                        </li>
+                    `;
+                });
+                studentListHtml += '</ul>';
+                $('#student-list').html(studentListHtml);
+            });
+        }
+
+        // Add a new student
+        $('#student-form').submit(function(event) {
+            event.preventDefault();
+            const student = {
+                name: $('#name').val(),
+                averageGrade: parseFloat($('#averageGrade').val())
+            };
+
+            $.ajax({
+                url: '/api/students',
+                type: 'POST',
+                contentType: 'application/json', // Send JSON format
+                data: JSON.stringify(student),
+                success: function() {
+                    fetchStudents();
+                    $('#student-form')[0].reset();
+                }
+            });
+        });
+
+        // Delete a student
+        function deleteStudent(id) {
+            $.ajax({
+                url: `/api/students/${id}`,
+                type: 'DELETE',
+                success: function() {
+                    fetchStudents();
+                }
+            });
+        }
+
+        // Initialize
+        $(document).ready(function() {
+            fetchStudents();
+        });
+    </script>
+</body>
+</html>

@@ -40,8 +40,8 @@ git clone https://github.com/your-username/student-management.git
 cd student-management
 
 ### Future Enhancements
-Implement user authentication.
-Add GlobalExceptionHandler 
-Integrate a real database (e.g., MongoDB, MySQL, PostgreSQL).
-Enhance the frontend with additional features and more advanced styling.
+- Implement user authentication.
+- Add GlobalExceptionHandler 
+- Integrate a real database (e.g., MongoDB, MySQL, PostgreSQL).
+- Enhance the frontend with additional features and more advanced styling.
 

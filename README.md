@@ -33,7 +33,7 @@ mvn spring-boot:run
 mvn test
 
 ### Clone the Repository
-git clone https://github.com/your-username/student-management.git
+git clone [https://github.com/EroshanJA/student-management.git](https://github.com/EroshanJA/student-management.git)
 cd student-management
 
 ### Future Enhancements
